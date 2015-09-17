@@ -1,0 +1,2 @@
+# Equa
+Equation solver
