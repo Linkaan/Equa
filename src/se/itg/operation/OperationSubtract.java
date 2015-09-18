@@ -1,5 +1,7 @@
 package se.itg.operation;
 
+import se.itg.parse.Bracket;
+
 public class OperationSubtract extends Operation {
 
 	public OperationSubtract() {
@@ -13,5 +15,12 @@ public class OperationSubtract extends Operation {
 
 	public double execute(double x, double y) {
 		return x - y;
+	}
+	
+	public boolean keyMatches(int index, char[] chars) {
+		if (index - 1 >= 0){
+			return super.keyMatches(index, chars) && Bracket.VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index - 1])); 
+		}
+		return false;
 	}
 }

@@ -6,8 +6,14 @@ import se.itg.operation.*;
 
 public class Bracket {
 	public static final String ID_ID = "ID";
-	public static final Operation[] operations = {new OperationMultiply(), 
-		new OperationDivide(), new OperationAdd(), new OperationSubtract()};
+	public static final String VALID_DOUBLE_CHARS = "0123456789.";
+	public static final Operation[] OPERATIONS = {
+		new OperationPower(), 
+		new OperationMultiply(), 
+		new OperationDivide(), 
+		new OperationAdd(), 
+		new OperationSubtract()
+		};
 
 	private ArrayList<Bracket> brackets;
 	private String data;
@@ -60,27 +66,80 @@ public class Bracket {
 	}
 	
 	public double calculate() {
-		double result = 0;
+		double result = 0.1;
 		String dataCopy = data;
-		boolean idStage1 = false;
-		char[] chars = data.toCharArray();
 		
-		for (int i = 0; i < chars.length; i++){
-			char c = chars[i];
-			if (c == 'I') {
-				idStage1 = true;
+		if (hasChildren()){
+			boolean idStage1 = false;
+			char[] chars = data.toCharArray();
+			
+			for (int i = 0; i < chars.length; i++){
+				char c = chars[i];
+				if (c == 'I') {
+					idStage1 = true;
+				}
+				if (idStage1 && c == 'D'){
+					int idIndex = getIdAt(i + 2);
+					dataCopy = dataCopy.replace("ID[" + idIndex + "]", String.valueOf(brackets.get(idIndex).calculate()));
+					idStage1 = false;
+				}
 			}
-			if (idStage1 && c == 'D'){
-				int idIndex = getIdAt(i);
-				dataCopy = dataCopy.replace("ID[" +  + "]", "");
+		}
+		
+		for (Operation o : OPERATIONS){
+			char[] chars = dataCopy.toCharArray();
+			for (int i = 0; i < chars.length; i++){
+				if (o.keyMatches(i, chars)) {
+					System.out.println(findDouble(i - 1, chars, -1) + " " + o.getKey() + " " + findDouble(i + 1, chars, 1));
+				}
 			}
 		}
 		
 		return result;
 	}
 	
+	private double findDouble(int index, char[] chars, int dir){
+		StringBuilder sb = new StringBuilder("");
+		
+		while (canCarryOnReading(index, chars, dir)){
+			sb.append(chars[index]);
+			index += dir;
+			
+		}
+		if (dir < 0){
+			sb.reverse();
+		}
+		
+		return Double.parseDouble(sb.toString());
+	}
+	
+	private boolean canCarryOnReading(int index, char[] chars, int dir){
+		if (!(index >= 0 && index < chars.length)) {
+			return false;
+		}
+		if (chars[index] == '-'){
+			if (index + dir >= 0 && index + dir < chars.length){
+				return !VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index + dir]));
+			}
+			else if (index == 0){
+				return true;
+			}
+		}
+		if (!VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index]))){
+			return false;
+		}
+		return true;
+	}
+	
 	private int getIdAt(int index){
-		return 0;
+		StringBuilder sb = new StringBuilder("");
+		char[] chars = data.toCharArray();
+		
+		while (chars[index] != ']'){
+			sb.append(chars[index]);
+			index++;
+		}
+		return Integer.parseInt(sb.toString());
 	}
 	
 	public boolean hasChildren() {

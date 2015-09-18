@@ -14,11 +14,11 @@ public class Parser {
 		return initialData;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(new Parser("6*(2.0+(3.5-6.4))-7+4.0*(6.8-6.0)"));
-	}
-	
 	public Bracket getTopBracket() {
 		return topBracket;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(new Parser("6.0*(-3.0+5.0)-(5.0-7.0)"));
 	}
 }	
