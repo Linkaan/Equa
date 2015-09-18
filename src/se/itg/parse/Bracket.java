@@ -18,7 +18,9 @@ public class Bracket {
 	private ArrayList<Bracket> brackets;
 	private String data;
 	
-	
+	/*
+	 * Creates the bracket object and recursively builds the three structure
+	 */
 	
 	public Bracket(String data){
 		this.data = "";
@@ -65,6 +67,10 @@ public class Bracket {
 		}
 	}
 	
+	/*
+	 * Calculates the value of the input
+	 */
+	
 	public double calculate() {
 		double result = 0.1;
 		String dataCopy = data;
@@ -98,20 +104,27 @@ public class Bracket {
 		return result;
 	}
 	
+	/*
+	 * Finds a double at the specified index
+	 */
+	
 	private double findDouble(int index, char[] chars, int dir){
 		StringBuilder sb = new StringBuilder("");
 		
 		while (canCarryOnReading(index, chars, dir)){
 			sb.append(chars[index]);
 			index += dir;
-			
 		}
+		
 		if (dir < 0){
 			sb.reverse();
 		}
-		
 		return Double.parseDouble(sb.toString());
 	}
+	
+	/*
+	 * Help findDouble determine if to carry on reading the char[]
+	 */
 	
 	private boolean canCarryOnReading(int index, char[] chars, int dir){
 		if (!(index >= 0 && index < chars.length)) {
@@ -131,6 +144,10 @@ public class Bracket {
 		return true;
 	}
 	
+	/*
+	 * Finds a ID of another bracket
+	 */
+	
 	private int getIdAt(int index){
 		StringBuilder sb = new StringBuilder("");
 		char[] chars = data.toCharArray();
@@ -141,6 +158,10 @@ public class Bracket {
 		}
 		return Integer.parseInt(sb.toString());
 	}
+	
+	/*
+	 * Returs this has any children
+	 */
 	
 	public boolean hasChildren() {
 		return brackets.size() != 0;
