@@ -2,22 +2,16 @@ package se.itg.operation;
 
 public abstract class Operation {
 	private String key;
+	private int parametersCount;
 	
-	public Operation(String key){
+	public Operation(String key, int parametersCount){
 		this.key = key;
+		this.parametersCount = parametersCount;
 	}
 	
 	public abstract double execute(double x);
 	
 	public abstract double execute(double x, double y);
-	
-	public String getKey() {
-		return key;
-	}
-	
-	public String toString() {
-		return this.getClass().getName();
-	}
 	
 	public boolean keyMatches(int index, char[] chars){
 		char[] keyChars = key.toCharArray();
@@ -30,5 +24,17 @@ public abstract class Operation {
 			}
 		}
 		return true;
+	}
+	
+	public String getKey() {
+		return key;
+	}
+	
+	public int getParametersCount() {
+		return parametersCount;
+	}
+	
+	public String toString() {
+		return this.getClass().getName();
 	}
 }

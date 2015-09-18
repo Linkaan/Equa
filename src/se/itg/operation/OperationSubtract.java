@@ -1,11 +1,11 @@
 package se.itg.operation;
 
-import se.itg.parse.Bracket;
 
 public class OperationSubtract extends Operation {
-
+	public static final String VALID_DOUBLE_CHARS = "0123456789.-";
+	
 	public OperationSubtract() {
-		super("-");
+		super("-", 2);
 	}
 	
 	public double execute(double x) {
@@ -19,7 +19,7 @@ public class OperationSubtract extends Operation {
 	
 	public boolean keyMatches(int index, char[] chars) {
 		if (index - 1 >= 0){
-			return super.keyMatches(index, chars) && Bracket.VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index - 1])); 
+			return super.keyMatches(index, chars) && VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index - 1])); 
 		}
 		return false;
 	}

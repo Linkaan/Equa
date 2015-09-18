@@ -3,7 +3,7 @@ package se.itg.operation;
 public class OperationDivide extends Operation{
 	
 	public OperationDivide() {
-		super("/");
+		super("/", 2);
 	}
 
 	public double execute(double x) {

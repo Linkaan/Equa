@@ -96,11 +96,39 @@ public class Bracket {
 			char[] chars = dataCopy.toCharArray();
 			for (int i = 0; i < chars.length; i++){
 				if (o.keyMatches(i, chars)) {
-					System.out.println(findDouble(i - 1, chars, -1) + " " + o.getKey() + " " + findDouble(i + 1, chars, 1));
+					double value = 0;
+					String from = "";
+					int replaceIndex = i;
+					if (o.getParametersCount() == 1){
+						double right = findDouble(i + 1, chars, 1);
+						value = o.execute(right);
+						from = o.getKey() + right; 
+					}
+					else if (o.getParametersCount() == 2){
+						double right = findDouble(i + 1, chars, 1);
+						double left = findDouble(i - 1, chars, -1);
+						value = o.execute(left, right);
+						from = left + o.getKey() + right;
+						replaceIndex -= String.valueOf(left).length();
+					}
+					else {
+						System.err.println("The operation " + o.toString() + " does not have 1 or 2 parameters, that's wrong");
+					}
+					i += String.valueOf(value).length();
+					dataCopy = indexReplace(replaceIndex, from, String.valueOf(value), dataCopy);
+					//System.out.println(dataCopy);
+					
 				}
 			}
 		}
-		
+		return Double.parseDouble(dataCopy);
+	}
+	
+	private String indexReplace(int index, String from, String to, String base){
+		//System.out.println(index + " " + (index + from.length()) + " " + base.length());
+		//System.out.println(from + " " + to + " " + base);
+		//System.out.println("--------");
+		String result = base.substring(0,index) + to + base.substring(index + from.length(), base.length());
 		return result;
 	}
 	
@@ -110,8 +138,9 @@ public class Bracket {
 	
 	private double findDouble(int index, char[] chars, int dir){
 		StringBuilder sb = new StringBuilder("");
+		int firstIndex = index;
 		
-		while (canCarryOnReading(index, chars, dir)){
+		while (canCarryOnReading(index, chars, dir, firstIndex)){
 			sb.append(chars[index]);
 			index += dir;
 		}
@@ -119,6 +148,9 @@ public class Bracket {
 		if (dir < 0){
 			sb.reverse();
 		}
+		//System.out.println(sb.toString() + " " + (firstIndex - dir) + " " + new String(chars));
+		//System.out.println(firstIndex - dir);
+		//System.out.println("----------");
 		return Double.parseDouble(sb.toString());
 	}
 	
@@ -126,13 +158,18 @@ public class Bracket {
 	 * Help findDouble determine if to carry on reading the char[]
 	 */
 	
-	private boolean canCarryOnReading(int index, char[] chars, int dir){
+	private boolean canCarryOnReading(int index, char[] chars, int dir, int firstIndex){
 		if (!(index >= 0 && index < chars.length)) {
 			return false;
 		}
 		if (chars[index] == '-'){
 			if (index + dir >= 0 && index + dir < chars.length){
-				return !VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index + dir]));
+				if (dir == -1){
+					return !VALID_DOUBLE_CHARS.contains(String.valueOf(chars[index + dir]));
+				}
+				else {
+					return index == firstIndex;
+				}			
 			}
 			else if (index == 0){
 				return true;

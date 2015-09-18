@@ -3,7 +3,7 @@ package se.itg.operation;
 public class OperationAdd extends Operation {
 
 	public OperationAdd() {
-		super("+");
+		super("+", 2);
 	}
 
 	public double execute(double x) {

@@ -4,7 +4,7 @@ package se.itg.operation;
 public class OperationPower extends Operation {
 
 	public OperationPower() {
-		super("^");
+		super("^", 2);
 	}
 	
 	public double execute(double x) {
