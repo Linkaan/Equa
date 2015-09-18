@@ -2,13 +2,13 @@ package se.itg.parse;
 
 import java.util.ArrayList;
 
-import se.itg.operation.Operation;
+import se.itg.operation.*;
 
 public class Bracket {
 	public static final String ID_ID = "ID";
-	public static final Operation[] operations = {};
-	public static final String[] FUNCTIONS = {"sin", "cos", "tan", "asin","acos", "atan"};
-	
+	public static final Operation[] operations = {new OperationMultiply(), 
+		new OperationDivide(), new OperationAdd(), new OperationSubtract()};
+
 	private ArrayList<Bracket> brackets;
 	private String data;
 	
@@ -57,6 +57,30 @@ public class Bracket {
 				this.data += c;
 			}
 		}
+	}
+	
+	public double calculate() {
+		double result = 0;
+		String dataCopy = data;
+		boolean idStage1 = false;
+		char[] chars = data.toCharArray();
+		
+		for (int i = 0; i < chars.length; i++){
+			char c = chars[i];
+			if (c == 'I') {
+				idStage1 = true;
+			}
+			if (idStage1 && c == 'D'){
+				int idIndex = getIdAt(i);
+				dataCopy = dataCopy.replace("ID[" +  + "]", "");
+			}
+		}
+		
+		return result;
+	}
+	
+	private int getIdAt(int index){
+		return 0;
 	}
 	
 	public boolean hasChildren() {

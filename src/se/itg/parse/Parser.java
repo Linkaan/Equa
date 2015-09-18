@@ -7,6 +7,7 @@ public class Parser {
 	public Parser(String data){
 		initialData = data;
 		topBracket = new Bracket(data);
+		topBracket.calculate();
 	}
 	
 	public String getOriginal() {
