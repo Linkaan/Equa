@@ -72,7 +72,6 @@ public class Bracket {
 	 */
 	
 	public double calculate() {
-		double result = 0.1;
 		String dataCopy = data;
 		
 		if (hasChildren()){
@@ -116,7 +115,6 @@ public class Bracket {
 					}
 					i += String.valueOf(value).length();
 					dataCopy = indexReplace(replaceIndex, from, String.valueOf(value), dataCopy);
-					//System.out.println(dataCopy);
 					
 				}
 			}
@@ -124,10 +122,11 @@ public class Bracket {
 		return Double.parseDouble(dataCopy);
 	}
 	
+	/*
+	 * replaces a 
+	 */
+	
 	private String indexReplace(int index, String from, String to, String base){
-		//System.out.println(index + " " + (index + from.length()) + " " + base.length());
-		//System.out.println(from + " " + to + " " + base);
-		//System.out.println("--------");
 		String result = base.substring(0,index) + to + base.substring(index + from.length(), base.length());
 		return result;
 	}
@@ -148,9 +147,6 @@ public class Bracket {
 		if (dir < 0){
 			sb.reverse();
 		}
-		//System.out.println(sb.toString() + " " + (firstIndex - dir) + " " + new String(chars));
-		//System.out.println(firstIndex - dir);
-		//System.out.println("----------");
 		return Double.parseDouble(sb.toString());
 	}
 	
@@ -203,6 +199,7 @@ public class Bracket {
 	public boolean hasChildren() {
 		return brackets.size() != 0;
 	}
+
 	
 	public String toString() {
 		if (hasChildren()){
