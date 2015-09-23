@@ -19,7 +19,7 @@ public class Bracket {
 	private String data;
 	
 	/*
-	 * Creates the bracket object and recursively builds the three structure
+	 * Creates the bracket object and recursively builds the tree structure
 	 */
 	
 	public Bracket(String data){
@@ -114,6 +114,7 @@ public class Bracket {
 						System.err.println("The operation " + o.toString() + " does not have 1 or 2 parameters, that's wrong");
 					}
 					i += String.valueOf(value).length();
+					
 					dataCopy = indexReplace(replaceIndex, from, String.valueOf(value), dataCopy);
 					
 				}
@@ -122,11 +123,9 @@ public class Bracket {
 		return Double.parseDouble(dataCopy);
 	}
 	
-	/*
-	 * replaces a 
-	 */
-	
 	private String indexReplace(int index, String from, String to, String base){
+		System.out.println(index + " " + base + " " + from + " " + to);
+		System.out.println("----------------------");
 		String result = base.substring(0,index) + to + base.substring(index + from.length(), base.length());
 		return result;
 	}

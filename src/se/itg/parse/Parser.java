@@ -9,23 +9,61 @@ public class Parser {
 		topBracket = new Bracket(data);
 	}
 	
-	public String parseString(String input){
-		//add multiply after bracket
-		String value = "";
+	public static String parseString(String input){
+		StringBuilder value = new StringBuilder("");
+		int closedBrackets = 0;
 		char[] chars = input.toCharArray();
+		
+		
 		for (int i = 0; i < chars.length; i++){
 			if (chars[i] == '('){
+				//count brackets if 0 then all opened brackets are closed
+				closedBrackets++;
+				//add multiply after bracket
 				if (i > 0 && charInString(Bracket.VALID_DOUBLE_CHARS, chars[i - 1])){
-					value += '*';
+					value.append('*');
 				}
 			}
-			value += chars[i];
+			if (chars[i] == ')'){
+				closedBrackets--;
+			}
+			//remove spaces and replace , with .
+			if (chars[i] != ' '){
+				if (chars[i] == ','){
+					value.append('.');
+				}
+				else {
+					value.append(chars[i]);
+				}
+			}
 		}
 		
-		return value;
+		chars = value.toString().toCharArray();
+		value = new StringBuilder("");
+		for (int i = 0; i < chars.length; i++){
+			value.append(chars[i]);
+			// transform all numbers into doubles aka adding .0 to the end of all ints
+			if (i + 1 < chars.length && charInString(Bracket.VALID_DOUBLE_CHARS, chars[i]) && !charInString(Bracket.VALID_DOUBLE_CHARS, chars[i + 1])){
+				String foundNumber = "";
+				for (int k = i; k >= 0; k--){
+					if (!charInString(Bracket.VALID_DOUBLE_CHARS, chars[k])){
+						break;
+					}
+					foundNumber += chars[k];
+				}
+				if (!charInString(foundNumber, '.')){
+					value.append(".0");
+				}
+			}
+		}
+		
+		if (closedBrackets != 0){
+			//TO-DO print error
+		}
+		return value.toString();
 	}
 	
-	public boolean charInString(String s, char search){
+	public static boolean charInString(String s, char search){
 		for (char c : s.toCharArray()){
 			if (search == c){
 				return true;
@@ -43,11 +81,12 @@ public class Parser {
 	}
 	
 	public static double calculate(String input) {
-		return new Bracket(input).calculate();
+		return new Bracket(parseString(input)).calculate();
 	}
 	
+	//debug main
 	public static void main(String[] args) {
-		Parser p = new Parser("6.0*(-3.0+5.0)-(5.0-7.0)^2.0");
-		System.out.println(p.parseString("6(4 + 6)-(5-5)"));
+		//System.out.println(calculate("3.0+4.0+5.0"));
+		System.out.println(calculate("6,0(4 + 6)-(5-5)"));
 	}
 }	
