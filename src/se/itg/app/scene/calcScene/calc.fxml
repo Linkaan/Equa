@@ -12,10 +12,6 @@
 		<TextField fx:id="equation"/>
 	</top>
 
-	<right>
-		<Button text="SOLVE" onAction="#solve"/>
-	</right>
-	
 	<bottom>
 		<Label fx:id="answer"/>
 	</bottom>        

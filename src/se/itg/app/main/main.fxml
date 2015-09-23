@@ -1,6 +1,7 @@
 <?import java.net.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
 <BorderPane fx:controller="se.itg.app.main.MainController"
             xmlns:fx="http://javafx.com/fxml"
 			id="borderpanestyle">
@@ -10,12 +11,11 @@
     </stylesheets>
             
 	<top> 
-		<ToolBar id="toolbalstyle">
-			<HBox spacing="3">
-    	        <Button text="Equation" onAction="#openEquationSolverScene"/>
-		        <Button text="Graf" />
-    	    </HBox>
-		</ToolBar>
+		<BorderPane>
+			<left>
+   	   	   		<Button text="Equation" onAction="#openEquationSolverScene"/>
+        	</left>
+		</BorderPane>
 	</top>
 	
 	<center>

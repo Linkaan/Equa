@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -22,10 +21,6 @@ public class CalcController implements Controller<CalcControllerData>, Initializ
 	@FXML
 	public Label answer;
 	
-	public void solve(){
-		answer.setText("" + Parser.calculate(equation.getText()));
-	}
-	
 	@Override
 	public void show () {
 		equation.requestFocus();
@@ -38,8 +33,9 @@ public class CalcController implements Controller<CalcControllerData>, Initializ
 
 	@Override
 	public void initialize (URL location, ResourceBundle resources) {
-		equation.textProperty().addListener((ChangeListener<String>) (observable, oldValue, aewValuerg2) -> {
-			
+		equation.textProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
+			updateAnswer(newValue);
+			System.out.println(newValue);
 		});
 	}
 	
@@ -51,5 +47,14 @@ public class CalcController implements Controller<CalcControllerData>, Initializ
 	@Override
 	public CalcControllerData getData () {
 		return data;
+	}
+	
+	private void updateAnswer(String equation){
+		if(equation.equals("")){
+			answer.setText("");
+		}
+		else{
+			answer.setText("" + Parser.calculate(equation));		
+		}
 	}
 }
