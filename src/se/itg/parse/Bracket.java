@@ -74,15 +74,18 @@ public class Bracket {
 	public double calculate() {
 		String dataCopy = data;
 		
+		//loop all the children and replace their ID with their value
 		if (hasChildren()){
 			boolean idStage1 = false;
 			char[] chars = data.toCharArray();
 			
 			for (int i = 0; i < chars.length; i++){
 				char c = chars[i];
+				// find an ID step 1
 				if (c == 'I') {
 					idStage1 = true;
 				}
+				//find an ID step 2 and replace ID with value
 				if (idStage1 && c == 'D'){
 					int idIndex = getIdAt(i + 2);
 					dataCopy = dataCopy.replace("ID[" + idIndex + "]", String.valueOf(brackets.get(idIndex).calculate()));
@@ -91,43 +94,53 @@ public class Bracket {
 			}
 		}
 		
+		//loop the operations in the correct order and do da math
 		for (Operation o : OPERATIONS){
-			char[] chars = dataCopy.toCharArray();
-			for (int i = 0; i < chars.length; i++){
-				if (o.keyMatches(i, chars)) {
-					double value = 0;
-					String from = "";
-					int replaceIndex = i;
-					if (o.getParametersCount() == 1){
-						double right = findDouble(i + 1, chars, 1);
-						value = o.execute(right);
-						from = o.getKey() + right; 
+			boolean checkAgain = true;
+			while (checkAgain){
+				char[] chars = dataCopy.toCharArray();
+				checkAgain = false;
+				for (int i = 0; i < chars.length; i++){
+					if (o.keyMatches(i, chars)) {
+						checkAgain = true;
+						double value = 0;
+						String from = "";
+						int replaceIndex = i;
+						
+						//calculate the value and the strings to replace to and from
+						
+						if (o.getParametersCount() == 1){
+							double right = findDouble(i + 1, chars, 1);
+							value = o.execute(right);
+							from = o.getKey() + right; 
+						}
+						else if (o.getParametersCount() == 2){
+							double right = findDouble(i + 1, chars, 1);
+							double left = findDouble(i - 1, chars, -1);
+							value = o.execute(left, right);
+							from = left + o.getKey() + right;
+							replaceIndex -= String.valueOf(left).length();
+						}
+						else {
+							System.err.println("The operation " + o.toString() + " does not have 1 or 2 parameters, that's wrong");
+						}
+						i += String.valueOf(value).length();
+						
+						dataCopy = indexReplace(replaceIndex, from, String.valueOf(value), dataCopy);
+						break;
 					}
-					else if (o.getParametersCount() == 2){
-						double right = findDouble(i + 1, chars, 1);
-						double left = findDouble(i - 1, chars, -1);
-						value = o.execute(left, right);
-						from = left + o.getKey() + right;
-						replaceIndex -= String.valueOf(left).length();
-					}
-					else {
-						System.err.println("The operation " + o.toString() + " does not have 1 or 2 parameters, that's wrong");
-					}
-					i += String.valueOf(value).length();
-					
-					dataCopy = indexReplace(replaceIndex, from, String.valueOf(value), dataCopy);
-					
 				}
 			}
 		}
 		return Double.parseDouble(dataCopy);
 	}
 	
+	/*
+	 *  replaces form with to in base at index and only at index. this does not check if it should replace
+	 */
+	
 	private String indexReplace(int index, String from, String to, String base){
-		System.out.println(index + " " + base + " " + from + " " + to);
-		System.out.println("----------------------");
-		String result = base.substring(0,index) + to + base.substring(index + from.length(), base.length());
-		return result;
+		return base.substring(0,index) + to + base.substring(index + from.length(), base.length());
 	}
 	
 	/*
