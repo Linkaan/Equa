@@ -1,0 +1,22 @@
+<?import java.net.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<BorderPane fx:controller="se.itg.app.scene.calcScene.CalcController" 
+			xmlns:fx="http://javafx.com/fxml">
+            
+     <stylesheets>
+    	<URL value="@calc.css"/>
+    </stylesheets>
+            
+	<top>
+		<TextField fx:id="equation"/>
+	</top>
+
+	<right>
+		<Button text="SOLVE" onAction="#solve"/>
+	</right>
+	
+	<bottom>
+		<Label fx:id="answer"/>
+	</bottom>        
+</BorderPane>
