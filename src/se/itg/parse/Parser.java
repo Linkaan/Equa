@@ -43,7 +43,7 @@ public class Parser {
 		for (int i = 0; i < chars.length; i++){
 			value.append(chars[i]);
 			// transform all numbers into doubles aka adding .0 to the end of all ints
-			if (i + 1 < chars.length && charInString(Bracket.VALID_DOUBLE_CHARS, chars[i]) && !charInString(Bracket.VALID_DOUBLE_CHARS, chars[i + 1])){
+			if ((i == chars.length - 1 && charInString(Bracket.VALID_DOUBLE_CHARS, chars[i])) || (i + 1 < chars.length && charInString(Bracket.VALID_DOUBLE_CHARS, chars[i]) && !charInString(Bracket.VALID_DOUBLE_CHARS, chars[i + 1]))){
 				String foundNumber = "";
 				for (int k = i; k >= 0; k--){
 					if (!charInString(Bracket.VALID_DOUBLE_CHARS, chars[k])){
@@ -86,7 +86,6 @@ public class Parser {
 	
 	//debug main
 	public static void main(String[] args) {
-		//System.out.println(calculate("3.0+4.0+5.0"));
-		System.out.println(calculate("6,0(4 + 6)-(5-5)"));
+		System.out.println(calculate("2^2^2"));
 	}
 }	
