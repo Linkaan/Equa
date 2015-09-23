@@ -3,6 +3,8 @@ package se.itg.app.scene.calcScene;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.management.OperationsException;
+
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +16,7 @@ import se.itg.parse.Parser;
 public class CalcController implements Controller<CalcControllerData>, Initializable{
 
 	private CalcControllerData data;
-	
+	private static final String[] operations = {"*", "/", "^", "+", "-", " "};	
 	@FXML
 	public TextField equation;
 	
@@ -54,6 +56,11 @@ public class CalcController implements Controller<CalcControllerData>, Initializ
 			answer.setText("");
 		}
 		else{
+			for(String operation : operations){
+				if(equation.endsWith(operation)){
+					return;
+				}
+			}
 			answer.setText("" + Parser.calculate(equation));		
 		}
 	}
