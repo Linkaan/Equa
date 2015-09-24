@@ -1,6 +1,6 @@
 package se.itg.app.tester;
 
-import se.itg.log.Logger;
+import se.itg.log.SimpleLog;
 import se.itg.parse.Parser;
 
 public class TesterMath {
@@ -17,7 +17,8 @@ public class TesterMath {
 			Operation = "equal";
 			temp = "=";
 		}else{
-			Logger.error(new IllegalArgumentException("Error msg here").toString());
+			//SimpleLog.getLogger().LogError(new IllegalArgumentException("Error msg here").toString());
+			SimpleLog.getLogger().LogError("Inga villkorliga operatorer funna i inmatningen (%s).\n", input);
 			Operation ="error";
 			temp = "error";
 			// -1 = universial error signal
